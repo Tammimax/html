@@ -1,17 +1,528 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
+
 <head>
-    <title>我的第一個網頁</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GRANOLA DAY｜天然穀物</title>
+
+    <style>
+
+        /* ===== 基本設定 ===== */
+
+        body {
+            margin: 0;
+            font-family: Arial, "Microsoft JhengHei", sans-serif;
+            color: #4b4032;
+            background-color: #faf7ef;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* ===== 導覽列 ===== */
+
+        header {
+            background-color: white;
+
+            padding: 20px 8%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #657044;
+        }
+
+        nav a {
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #a66a3f;
+        }
+
+
+        /* ===== 首頁 Hero ===== */
+
+        .hero {
+            text-align: center;
+
+            padding: 100px 20px;
+
+            background-color: #eee7d5;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            color: #657044;
+            margin-bottom: 15px;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            font-weight: normal;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: 20px auto;
+            font-size: 18px;
+        }
+
+
+        /* ===== 按鈕 ===== */
+
+        .button {
+            display: inline-block;
+
+            padding: 12px 28px;
+
+            background-color: #657044;
+            color: white;
+
+            border-radius: 30px;
+
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #a66a3f;
+        }
+
+
+        /* ===== Section ===== */
+
+        section {
+            padding: 70px 8%;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title h2 {
+            color: #657044;
+            font-size: 36px;
+        }
+
+
+        /* ===== 天然食材 ===== */
+
+        .ingredients {
+            background-color: white;
+        }
+
+        .ingredient-box {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .ingredient {
+            width: 180px;
+
+            padding: 25px;
+
+            background-color: #f5f0e3;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+        .ingredient h3 {
+            color: #657044;
+        }
+
+
+        /* ===== Granola ===== */
+
+        .product-box {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+        }
+
+        .product {
+            width: 220px;
+
+            background-color: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .product h3 {
+            color: #657044;
+        }
+
+
+        /* ===== 品牌故事 ===== */
+
+        .story {
+            background-color: #657044;
+
+            color: white;
+
+            text-align: center;
+        }
+
+        .story-content {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* ===== Footer ===== */
+
+        footer {
+            background-color: #3e352b;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+
+        /* ===== 手機版 ===== */
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+            }
+
+            nav {
+                margin-top: 15px;
+            }
+
+            nav a {
+                margin: 5px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <h1>Hello World!</h1>
 
-    <p>這是我的第一個 HTML 網頁。</p>
+    <!-- =========================
+         導覽列
+    ========================== -->
 
-    <button>點我</button>
+    <header>
+
+        <div class="logo">
+            GRANOLA DAY
+        </div>
+
+        <nav>
+
+            <a href="#home">首頁</a>
+
+            <a href="#ingredients">
+                天然食材
+            </a>
+
+            <a href="#granola">
+                OUR GRANOLA
+            </a>
+
+            <a href="#story">
+                品牌故事
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================
+         首頁
+    ========================== -->
+
+    <section class="hero" id="home">
+
+        <h1>
+            GRANOLA DAY
+        </h1>
+
+        <h2>
+            每一口，開啟更好的每一天。
+        </h2>
+
+        <p>
+            天然穀物、自然食材與香脆口感，
+            為每天帶來簡單、健康又美味的選擇。
+        </p>
+
+        <a href="#granola" class="button">
+            探索天然穀物
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================
+         天然食材
+    ========================== -->
+
+    <section class="ingredients" id="ingredients">
+
+        <div class="title">
+
+            <h2>
+                NATURAL INGREDIENTS
+            </h2>
+
+            <p>
+                簡單天然的食材，創造安心的美味。
+            </p>
+
+        </div>
+
+
+        <div class="ingredient-box">
+
+
+            <div class="ingredient">
+
+                <h3>
+                    🌾 天然穀物
+                </h3>
+
+                <p>
+                    精選天然穀物，
+                    保留自然香氣。
+                </p>
+
+            </div>
+
+
+            <div class="ingredient">
+
+                <h3>
+                    🍓 真實水果
+                </h3>
+
+                <p>
+                    自然水果風味，
+                    清爽又美味。
+                </p>
+
+            </div>
+
+
+            <div class="ingredient">
+
+                <h3>
+                    🥜 天然堅果
+                </h3>
+
+                <p>
+                    香脆堅果，
+                    增添豐富口感。
+                </p>
+
+            </div>
+
+
+            <div class="ingredient">
+
+                <h3>
+                    🍯 低糖概念
+                </h3>
+
+                <p>
+                    減少甜膩，
+                    享受自然滋味。
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         OUR GRANOLA
+    ========================== -->
+
+    <section id="granola">
+
+        <div class="title">
+
+            <h2>
+                OUR GRANOLA
+            </h2>
+
+            <p>
+                找到你喜歡的天然口味。
+            </p>
+
+        </div>
+
+
+        <div class="product-box">
+
+
+            <div class="product">
+
+                <h3>
+                    🌾 Original
+                </h3>
+
+                <p>
+                    經典天然穀物，
+                    簡單純粹的好滋味。
+                </p>
+
+                <a href="#" class="button">
+                    查看產品
+                </a>
+
+            </div>
+
+
+            <div class="product">
+
+                <h3>
+                    🍓 Berry
+                </h3>
+
+                <p>
+                    莓果酸甜搭配香脆穀物，
+                    清爽又有活力。
+                </p>
+
+                <a href="#" class="button">
+                    查看產品
+                </a>
+
+            </div>
+
+
+            <div class="product">
+
+                <h3>
+                    🥜 Honey Nut
+                </h3>
+
+                <p>
+                    蜂蜜與堅果，
+                    帶來自然香甜。
+                </p>
+
+                <a href="#" class="button">
+                    查看產品
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         品牌故事
+    ========================== -->
+
+    <section class="story" id="story">
+
+        <div class="story-content">
+
+            <h2>
+                OUR STORY
+            </h2>
+
+            <p>
+                GRANOLA DAY 相信，
+                健康的生活可以很簡單。
+            </p>
+
+            <p>
+                我們希望用天然穀物、
+                自然食材與不同口味，
+                讓每個年齡的人都能享受
+                一份安心又美味的 Granola。
+            </p>
+
+            <p>
+                <strong>
+                    Crunch Into a Better Day.
+                </strong>
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         Footer
+    ========================== -->
+
+    <footer>
+
+        <h3>
+            GRANOLA DAY
+        </h3>
+
+        <p>
+            Natural · Fresh · Fun · Family
+        </p>
+
+        <p>
+            © 2026 Granola Day
+        </p>
+
+    </footer>
+
 
 </body>
+
 </html>
