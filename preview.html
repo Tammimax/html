@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GRANOLA DAY｜天然穀物</title>
+  <meta name="description" content="GRANOLA DAY 天然穀物，讓每一天從美味開始。">
+
+  <style>
+    :root {
+      --green: #68794c;
+      --dark: #30372d;
+      --cream: #f8f6ef;
+      --white: #fff;
+      --border: #e7e5dc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--dark);
+      background: var(--cream);
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      line-height: 1.7;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(248, 246, 239, .96);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 5%;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--green);
+    }
+
+    .nav-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button, .button {
+      border: 0;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--green);
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    button:hover, .button:hover { opacity: .85; }
+
+    button.secondary {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    main {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    .hero {
+      padding: 75px 20px;
+      text-align: center;
+      background: #e9eadb;
+      margin-top: 28px;
+      border-radius: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      letter-spacing: 3px;
+      margin: 0;
+    }
+
+    .hero p { color: #555c4d; }
+
+    section { padding: 32px 0; }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .product-image {
+      height: 170px;
+      display: grid;
+      place-items: center;
+      background: #f0eee4;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 60px;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .price {
+      color: var(--green);
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      margin: 8px 0 14px;
+      border: 1px solid #d8d8cf;
+      border-radius: 6px;
+      background: white;
+      font: inherit;
+    }
+
+    label { font-size: 14px; }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin: 16px 0;
+    }
+
+    .hidden { display: none !important; }
+
+    .cart-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notice {
+      padding: 12px;
+      background: #eeefdf;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      background: #e9eadf;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 12px 4%; }
+      .hero { padding: 45px 14px; }
+      .nav-actions button { padding: 8px 10px; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <nav>
+    <div class="logo">GRANOLA DAY</div>
+    <div class="nav-actions">
+      <button class="secondary" onclick="showSection('productsSection')">
+        商品
+      </button>
+      <button class="secondary" onclick="showSection('cartSection')">
+        購物車 (<span id="cartCount">0</span>)
+      </button>
+      <button onclick="showSection('accountSection')">會員中心</button>
+      <button id="logoutBtn" class="secondary hidden" onclick="logout()">
+        登出
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <p>NATURAL · FRESH · EVERY DAY</p>
+    <h1>GRANOLA DAY</h1>
+    <h2>每一口，開啟更好的每一天。</h2>
+    <p>天然穀物、果乾與堅果，為日常增添美味。</p>
+    <button onclick="showSection('productsSection')">
+      探索天然穀物
+    </button>
+  </section>
+
+  <div id="status" class="notice" role="status" aria-live="polite">
+    正在連接商店……
+  </div>
+
+  <section id="productsSection">
+    <div class="section-heading">
+      <h2>OUR GRANOLA</h2>
+      <button class="secondary" onclick="loadProducts()">重新載入</button>
+    </div>
+    <p>找到你喜歡的天然口味。</p>
+    <div id="productList" class="products"></div>
+  </section>
+
+  <section id="detailSection" class="hidden">
+    <h2>商品詳細資料</h2>
+    <div id="productDetail" class="panel"></div>
+  </section>
+
+  <section id="accountSection">
+    <h2>會員中心</h2>
+
+    <div id="authPanel" class="panel">
+      <h3>會員登入</h3>
+      <form id="loginForm">
+        <label for="loginEmail">電子郵件</label>
+        <input id="loginEmail" type="email" autocomplete="email" required>
+
+        <label for="loginPassword">密碼</label>
+        <input id="loginPassword" type="password"
+          autocomplete="current-password" required>
+
+        <button type="submit">登入</button>
+        <button type="button" class="secondary"
+          onclick="register()">註冊會員</button>
+        <button type="button" class="secondary"
+          onclick="resetPassword()">忘記密碼</button>
+      </form>
+    </div>
+
+    <div id="profilePanel" class="panel hidden">
+      <h3>會員資料維護</h3>
+      <p id="memberEmail"></p>
+
+      <form id="profileForm">
+        <label for="displayName">姓名</label>
+        <input id="displayName" maxlength="80" required>
+
+        <label for="phone">電話</label>
+        <input id="phone" type="tel" maxlength="30">
+
+        <label for="address">收件地址</label>
+        <textarea id="address" maxlength="300" rows="3"></textarea>
+
+        <button type="submit">儲存會員資料</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h3>我的訂單</h3>
+      <button class="secondary" onclick="loadOrders()">查詢歷史訂單</button>
+      <div id="orderList"></div>
+    </div>
+  </section>
+
+  <section id="cartSection">
+    <h2>購物車</h2>
+    <div class="panel">
+      <div id="cartList">請先登入以查看購物車。</div>
+      <h3>合計：NT$ <span id="cartTotal">0</span></h3>
+      <button onclick="checkout()">前往結帳</button>
+    </div>
+  </section>
+
+  <section id="adminSection" class="hidden">
+    <h2>商品管理</h2>
+    <p>僅限具有 Firebase admin 自訂權限的管理員使用。</p>
+    <div class="panel">
+      <form id="productForm">
+        <label for="newName">商品名稱</label>
+        <input id="newName" maxlength="120" required>
+
+        <label for="newPrice">價格（新台幣）</label>
+        <input id="newPrice" type="number" min="1" max="100000"
+          step="1" required>
+
+        <label for="newImage">商品圖片網址（HTTPS）</label>
+        <input id="newImage" type="url" placeholder="https://...">
+
+        <label for="newDescription">商品描述</label>
+        <textarea id="newDescription" maxlength="2000"></textarea>
+
+        <label>
+          <input id="newPublished" type="checkbox" checked
+            style="display:inline;width:auto">
+          立即上架
+        </label>
+
+        <button type="submit">建立商品</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>GRANOLA DAY</strong>
+  <p>Natural · Fresh · Fun · Family</p>
+  <small>© 2026 Granola Day</small>
+</footer>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+  import {
+    getAuth, createUserWithEmailAndPassword,
+    signInWithEmailAndPassword, signOut,
+    onAuthStateChanged, sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+  import {
+    getFirestore, collection, doc, getDoc, getDocs,
+    setDoc, addDoc, updateDoc, deleteDoc, query, where,
+    orderBy, limit, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  // 請換成 Firebase Console → 專案設定 → 您的應用程式
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let isAdmin = false;
+  let products = [];
+  let cartItems = [];
+
+  const $ = id => document.getElementById(id);
+
+  function message(text) {
+    $("status").textContent = text;
+  }
+
+  window.showSection = function(id) {
+    $(id).scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  function safeText(value) {
+    return String(value ?? "");
+  }
+
+  function money(value) {
+    return Number(value || 0).toLocaleString("zh-TW");
+  }
+
+  function escapeHTML(value) {
+    return safeText(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    })[char]);
+  }
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    try {
+      await signInWithEmailAndPassword(
+        auth, $("loginEmail").value.trim(),
+        $("loginPassword").value
+      );
+      message("登入成功。");
+    } catch (error) {
+      message("登入失敗：" + error.message);
+    }
+  });
+
+  window.register = async function() {
+    const email = $("loginEmail").value.trim();
+    const password = $("loginPassword").value;
+
+    if (!email || password.length < 6) {
+      message("請輸入有效電子郵件及至少 6 個字元的密碼。");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      message("註冊成功，歡迎加入 GRANOLA DAY。");
+    } catch (error) {
+      message("註冊失敗：" + error.message);
+    }
+  };
+
+  window.resetPassword = async function() {
+    const email = $("loginEmail").value.trim();
+    if (!email) {
+      message("請先輸入電子郵件。");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      message("若電子郵件符合帳號條件，請查看密碼重設信件。");
+    } catch (error) {
+      message("目前無法處理重設要求，請稍後再試。");
+    }
+  };
+
+  window.logout = async function() {
+    try {
+      await signOut(auth);
+      message("已登出。");
+    } catch (error) {
+      message("登出失敗：" + error.message);
+    }
+  };
+
+  onAuthStateChanged(auth, async user => {
+    currentUser = user;
+    isAdmin = false;
+
+    $("authPanel").classList.toggle("hidden", !!user);
+    $("profilePanel").classList.toggle("hidden", !user);
+    $("logoutBtn").classList.toggle("hidden", !user);
+    $("adminSection").classList.add("hidden");
+
+    if (user) {
+      $("memberEmail").textContent = "帳號：" + user.email;
+
+      try {
+        const token = await user.getIdTokenResult(true);
+        isAdmin = token.claims.admin === true;
+        $("adminSection").classList.toggle("hidden", !isAdmin);
+
+        const profile = await getDoc(doc(db, "users", user.uid));
+        if (profile.exists()) {
+          const data = profile.data();
+          $("displayName").value = data.displayName || "";
+          $("phone").value = data.phone || "";
+          $("address").value = data.address || "";
+        } else {
+          $("displayName").value = "";
+          $("phone").value = "";
+          $("address").value = "";
+        }
+
+        await loadCart();
+      } catch (error) {
+        message("會員資料讀取失敗，請確認 Firestore Rules。");
+      }
+    } else {
+      cartItems = [];
+      renderCart();
+    }
+
+    await loadProducts();
+  });
+
+  $("profileForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!currentUser) return message("請先登入。");
+
+    try {
+      await setDoc(doc(db, "users", currentUser.uid), {
+        displayName: $("displayName").value.trim(),
+        phone: $("phone").value.trim(),
+        address: $("address").value.trim(),
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      message("會員資料已儲存。");
+    } catch (error) {
+      message("儲存失敗，請檢查會員資料規則。");
+    }
+  });
+
+  async function loadProducts() {
+    try {
+      const snapshot = await getDocs(
+        query(collection(db, "products"), limit(100))
+      );
+
+      products = snapshot.docs
+        .map(item => ({ id: item.id, ...item.data() }))
+        .filter(item => item.published === true || isAdmin);
+
+      renderProducts();
+      message("商品已更新。");
+    } catch (error) {
+      $("productList").textContent = "無法載入商品，請確認 Firestore Rules。";
+      message("商品讀取失敗：" + error.message);
+    }
+  }
+
+  function renderProducts() {
+    const list = $("productList");
+    list.replaceChildren();
+
+    if (!products.length) {
+      list.textContent = "目前尚無上架商品。請由管理員建立商品。";
+      return;
+    }
+
+    products.forEach(product => {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const imageBox = document.createElement("div");
+      imageBox.className = "product-image";
+
+      if (typeof product.imageUrl === "string" &&
+          /^https:\/\//i.test(product.imageUrl)) {
+        const image = document.createElement("img");
+        image.src = product.imageUrl;
+        image.alt = product.name || "Granola 商品";
+        image.loading = "lazy";
+        image.referrerPolicy = "no-referrer";
+        image.onerror = () => {
+          image.remove();
+          imageBox.textContent = "🌾";
+        };
+        imageBox.append(image);
+      } else {
+        imageBox.textContent = "🌾";
+      }
+
+      const title = document.createElement("h3");
+      title.textContent = product.name || "Granola 商品";
+
+      const price = document.createElement("p");
+      price.className = "price";
+      price.textContent = "NT$ " + money(product.price);
+
+      const detailButton = document.createElement("button");
+      detailButton.className = "secondary";
+      detailButton.textContent = "查看詳情";
+      detailButton.addEventListener("click", () => showProduct(product.id));
+
+      const addButton = document.createElement("button");
+      addButton.textContent = "加入購物車";
+      addButton.addEventListener("click", () => addToCart(product.id));
+
+      card.append(imageBox, title, price, detailButton, addButton);
+
+      if (isAdmin) {
+        const editButton = document.createElement("button");
+        editButton.className = "secondary";
+        editButton.textContent = "下架商品";
+        editButton.addEventListener("click", async () => {
+          if (!confirm("確定要下架此商品？")) return;
+          try {
+            await updateDoc(doc(db, "products", product.id), {
+              published: false
+            });
+            await loadProducts();
+          } catch (error) {
+            message("下架失敗：" + error.message);
+          }
+        });
+        card.append(editButton);
+      }
+
+      list.append(card);
+    });
+  }
+
+  window.showProduct = function(id) {
+    const product = products.find(item => item.id === id);
+    if (!product) return;
+
+    $("detailSection").classList.remove("hidden");
+    const detail = $("productDetail");
+    detail.replaceChildren();
+
+    const title = document.createElement("h3");
+    title.textContent = product.name || "";
+
+    const description = document.createElement("p");
+    description.textContent = product.description || "商品介紹";
+
+    const price = document.createElement("p");
+    price.className = "price";
+    price.textContent = "NT$ " + money(product.price);
+
+    const add = document.createElement("button");
+    add.textContent = "加入購物車";
+    add.addEventListener("click", () => addToCart(product.id));
+
+    detail.append(title, description, price, add);
+    showSection("detailSection");
+  };
+
+  $("productForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!currentUser || !isAdmin) {
+      return message("沒有商品管理權限。");
+    }
+
+    const price = Number($("newPrice").value);
+    const imageUrl = $("newImage").value.trim();
+
+    if (!Number.isSafeInteger(price) || price < 1) {
+      return message("請輸入有效的整數價格。");
+    }
+
+    if (imageUrl && !/^https:\/\//i.test(imageUrl)) {
+      return message("商品圖片網址必須使用 HTTPS。");
+    }
+
+    try {
+      await addDoc(collection(db, "products"), {
+        name: $("newName").value.trim(),
+        price,
+        imageUrl,
+        description: $("newDescription").value.trim(),
+        published: $("newPublished").checked,
+        createdAt: serverTimestamp()
+      });
+
+      $("productForm").reset();
+      message("商品已建立。");
+      await loadProducts();
+    } catch (error) {
+      message("新增商品失敗：" + error.message);
+    }
+  });
+
+  async function loadCart() {
+    if (!currentUser) {
+      cartItems = [];
+      return renderCart();
+    }
+
+    try {
+      const snapshot = await getDocs(
+        collection(db, "carts", currentUser.uid, "items")
+      );
+
+      cartItems = snapshot.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }));
+
+      renderCart();
+    } catch (error) {
+      message("購物車讀取失敗，請確認 Rules。");
+    }
+  }
+
+  async function addToCart(productId) {
+    if (!currentUser) {
+      showSection("accountSection");
+      return message("請先登入會員，再加入購物車。");
+    }
+
+    try {
+      const ref = doc(db, "carts", currentUser.uid,
+                      "items", productId);
+      const existing = await getDoc(ref);
+      const quantity = existing.exists()
+        ? Number(existing.data().quantity || 0) + 1 : 1;
+
+      if (quantity > 99) return message("單項商品數量上限為 99。");
+
+      await setDoc(ref, {
+        quantity,
+        updatedAt: serverTimestamp()
+      });
+
+      await loadCart();
+      message("已加入購物車。");
+    } catch (error) {
+      message("加入購物車失敗：" + error.message);
+    }
+  }
+
+  async function changeQuantity(productId, quantity) {
+    if (!currentUser) return;
+
+    try {
+      const ref = doc(db, "carts", currentUser.uid,
+                      "items", productId);
+
+      if (quantity <= 0) {
+        await deleteDoc(ref);
+      } else {
+        await updateDoc(ref, {
+          quantity: Math.min(99, Math.floor(quantity)),
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      await loadCart();
+    } catch (error) {
+      message("更新購物車失敗：" + error.message);
+    }
+  }
+
+  function renderCart() {
+    $("cartCount").textContent = cartItems.reduce(
+      (sum, item) => sum + Number(item.quantity || 0), 0
+    );
+
+    const list = $("cartList");
+    list.replaceChildren();
+    let total = 0;
+
+    if (!currentUser) {
+      list.textContent = "請先登入以查看購物車。";
+      $("cartTotal").textContent = "0";
+      return;
+    }
+
+    if (!cartItems.length) {
+      list.textContent = "購物車目前是空的。";
+    }
+
+    cartItems.forEach(item => {
+      const product = products.find(p => p.id === item.id);
+      if (!product) return;
+
+      const quantity = Number(item.quantity || 0);
+      total += Number(product.price || 0) * quantity;
+
+      const row = document.createElement("div");
+      row.className = "cart-row";
+
+      const info = document.createElement("div");
+      const name = document.createElement("strong");
+      name.textContent = product.name || "";
+      const subtotal = document.createElement("p");
+      subtotal.textContent = "NT$ " +
+        money(Number(product.price || 0) * quantity);
+      info.append(name, subtotal);
+
+      const controls = document.createElement("div");
+      const less = document.createElement("button");
+      less.textContent = "−";
+      less.setAttribute("aria-label", "減少數量");
+      less.onclick = () => changeQuantity(item.id, quantity - 1);
+
+      const count = document.createElement("span");
+      count.textContent = " " + quantity + " ";
+
+      const more = document.createElement("button");
+      more.textContent = "+";
+      more.setAttribute("aria-label", "增加數量");
+      more.onclick = () => changeQuantity(item.id, quantity + 1);
+
+      const remove = document.createElement("button");
+      remove.textContent = "刪除";
+      remove.className = "secondary";
+      remove.onclick = () => changeQuantity(item.id, 0);
+
+      controls.append(less, count, more, remove);
+      row.append(info, controls);
+      list.append(row);
+    });
+
+    $("cartTotal").textContent = money(total);
+  }
+
+  window.loadOrders = async function() {
+    if (!currentUser) {
+      return message("請先登入查看訂單。");
+    }
+
+    try {
+      const result = await getDocs(query(
+        collection(db, "orders"),
+        where("uid", "==", currentUser.uid),
+        orderBy("createdAt", "desc"),
+        limit(30)
+      ));
+
+      const list = $("orderList");
+      list.replaceChildren();
+
+      if (result.empty) {
+        list.textContent = "目前沒有訂單。";
+        return;
+      }
+
+      result.forEach(item => {
+        const order = item.data();
+        const row = document.createElement("p");
+        row.textContent = "訂單 " + item.id +
+          "｜NT$ " + money(order.total) +
+          "｜" + safeText(order.status || "處理中");
+        list.append(row);
+      });
+    } catch (error) {
+      message("訂單讀取失敗；首次查詢可能需要建立 Firestore 索引。");
+    }
+  };
+
+  window.checkout = function() {
+    if (!currentUser) {
+      showSection("accountSection");
+      return message("請先登入才能結帳。");
+    }
+
+    if (!cartItems.length) {
+      return message("購物車沒有商品。");
+    }
+
+    message(
+      "購物車已準備完成，但尚未串接付款服務。\n" +
+      "正式上線前，必須由安全後端重新驗證商品價格、庫存與總金額，" +
+      "建立訂單，再建立金流付款工作階段。\n" +
+      "請勿直接將前端顯示的總金額當作實際應付款金額。"
+    );
+  };
+
+  loadProducts();
+</script>
+</body>
+</html>
